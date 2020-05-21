@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <ctype.h>
 #include <string>
 void Normalize255RGB(GLfloat *rgbs)
 {
@@ -8,7 +9,11 @@ void Normalize255RGB(GLfloat *rgbs)
 
 int char2int(char c)
 {
-    return c - '0';
+    if('0'<=c && c<='9')
+        return c-'0';
+    else if('A'<=c&&c<='F')
+        return c-55;
+    return 0;
 }
 
 GLfloat *ParseColorString(const char *ColorString)
@@ -24,14 +29,14 @@ GLfloat *ParseColorString(const char *ColorString)
     GLfloat *result = new GLfloat[len / 2];
     if (len == 8)
     {
-        auto alpha_value = char2int(ColorString[begin]) * 0xf + char2int(ColorString[begin + 1]);
+        auto alpha_value = char2int(toupper(ColorString[begin])) * 16 + char2int(toupper(ColorString[begin + 1]));
         result[3] = alpha_value;
         begin += 2;
     }
     int place_value_index = 0;
     for (int i = begin; i < len; i += 2)
     {
-        result[place_value_index++] = char2int(ColorString[begin]) * 0xf + char2int(ColorString[begin + 1]);
+        result[place_value_index++] = char2int(toupper(ColorString[i])) * 16 + char2int(toupper(ColorString[i + 1]));
     }
     return result;
 }

@@ -1,11 +1,18 @@
 #define GLEW_STATIC
 #include "Bootstrap.h"
 #include "Utils.h"
+#include <iostream>
 using namespace std;
 
 int main(int argc,const char*argv[])
 {
 	auto window = InitGLFWEnvrionment(argc, argv);
+	GLfloat* colorArr = ParseColorString("#66CCFF");
+	for(int i=0;i<3;++i)
+	{
+		cout << (float)colorArr[i] << " ";
+	}
+	cout << endl;
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
